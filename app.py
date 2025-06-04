@@ -11,28 +11,18 @@ def check_player_info(target_id):
         task = progress.add_task("[cyan]Fetching player data...", total=100)
 
         cookies = {
-            '_ga': 'GA1.1.2123120599.1674510784',
-            '_fbp': 'fb.1.1674510785537.363500115',
-            '_ga_7JZFJ14B0B': 'GS1.1.1674510784.1.1.1674510789.0.0.0',
-            'source': 'mb',
             'region': 'MA',
             'language': 'ar',
-            '_ga_TVZ1LG7BEB': 'GS1.1.1674930050.3.1.1674930171.0.0.0',
-            'datadome': '6h5F5cx_GpbuNtAkftMpDjsbLcL3op_5W5Z-npxeT_qcEe_7pvil2EuJ6l~JlYDxEALeyvKTz3~LyC1opQgdP~7~UDJ0jYcP5p20IQlT3aBEIKDYLH~cqdfXnnR6FAL0',
             'session_key': 'efwfzwesi9ui8drux4pmqix4cosane0y',
         }
 
         headers = {
             'Accept-Language': 'en-US,en;q=0.9',
-            'Connection': 'keep-alive',
             'Origin': 'https://shop2game.com',
             'Referer': 'https://shop2game.com/app/100067/idlogin',
             'User-Agent': 'Mozilla/5.0 (Linux; Android 11; Redmi Note 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Mobile Safari/537.36',
             'accept': 'application/json',
             'content-type': 'application/json',
-            'sec-ch-ua': '"Chromium";v="107", "Not=A?Brand";v="24"',
-            'sec-ch-ua-mobile': '?1',
-            'sec-ch-ua-platform': '"Android"',
             'x-datadome-clientid': '6h5F5cx_GpbuNtAkftMpDjsbLcL3op_5W5Z-npxeT_qcEe_7pvil2EuJ6l~JlYDxEALeyvKTz3~LyC1opQgdP~7~UDJ0jYcP5p20IQlT3aBEIKDYLH~cqdfXnnR6FAL0',
         }
 
@@ -44,8 +34,10 @@ def check_player_info(target_id):
 
         try:
             progress.update(task, advance=30)
-            res = requests.post('https://shop2game.com/api/auth/player_id_login', 
-                              cookies=cookies, headers=headers, json=json_data)
+            res = requests.post(
+                'https://shop2game.com/api/auth/player_id_login',
+                cookies=cookies, headers=headers, json=json_data
+            )
 
             if res.status_code != 200 or not res.json().get('nickname'):
                 return {"error": "ID NOT FOUND"}
@@ -60,15 +52,7 @@ def check_player_info(target_id):
             ban_response = requests.get(ban_url, headers={
                 'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36',
                 'Accept': 'application/json, text/plain, */*',
-                'authority': 'ff.garena.com',
-                'accept-language': 'en-GB,en-US;q=0.9,en;q=0.8',
                 'referer': 'https://ff.garena.com/en/support/',
-                'sec-ch-ua': '"Not_A Brand";v="8", "Chromium";v="120"',
-                'sec-ch-ua-mobile': '?1',
-                'sec-ch-ua-platform': '"Android"',
-                'sec-fetch-dest': 'empty',
-                'sec-fetch-mode': 'cors',
-                'sec-fetch-site': 'same-origin',
                 'x-requested-with': 'B6FksShzIgjfrYImLpTsadjS86sddhFH',
             })
 
@@ -87,6 +71,7 @@ def check_player_info(target_id):
                 return {"error": "Failed to retrieve ban status"}
 
             return {
+                "player_id": target_id,
                 "nickname": nickname,
                 "region": region,
                 "ban_status": ban_message,
@@ -107,3 +92,6 @@ def get_region_info():
         return jsonify(result), 404
 
     return jsonify(result)
+
+if __name__ == '__main__':
+    app.run(debug=True)
