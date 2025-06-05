@@ -43,7 +43,7 @@ def check_player_info(target_id):
                 return {"error": "ID NOT FOUND"}
 
             player_data = res.json()
-            nickname = player_data.get('nickname', 'N/A')
+            player_name = player_data.get('nickname', 'N/A')
             region = player_data.get('region', 'N/A')
 
             progress.update(task, advance=35)
@@ -72,7 +72,7 @@ def check_player_info(target_id):
 
             return {
                 "player_id": target_id,
-                "nickname": nickname,
+                "player_name": player_name,
                 "region": region,
                 "ban_status": ban_message,
                 "ban_period": f"{period} months" if is_banned and period > 0 else None
