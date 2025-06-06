@@ -74,8 +74,8 @@ def check_player_info(target_id):
                 "player_id": target_id,
                 "player_name": player_name,
                 "region": region,
-                "ban_status": ban_message,
-                "ban_period": f"{period} months" if is_banned and period > 0 else None
+                "status": ban_message,
+                "period": f"{period} months" if is_banned and period > 0 else None
             }
 
         except requests.exceptions.RequestException as e:
